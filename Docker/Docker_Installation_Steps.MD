@@ -7,6 +7,9 @@
 
 1. Install docker and start docker services
    ```sh 
+   sudo su -
+   hostname docker-host
+   sudo su -
    yum install docker -y
    docker --version 
    
@@ -14,6 +17,15 @@
    service docker start
    service docker status
    ```
+   
+   %%an example of docker container for tomcat
+   ```sh
+   docker pull tomcat:latest
+   docker run --name tomcat-container -p 8080:8080 tomcat:latest
+   ```
+   visit "IP of docker instance in AWS":8080
+   %%%
+   
 1. Create a user called dockeradmin
    ```sh
    useradd dockeradmin
