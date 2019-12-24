@@ -68,6 +68,47 @@ pwd
 ```
 in remote directoty fill "." Apply and save it, and click build now
 
+### Create a Dockerfile
+[dockeradmin@docker-host ~]
+
+```sh
+vi Dockerfile
+%%%
+FROM tomcat:latest
+MAINTAINER Chen Yi
+COPY  ./webapp.war /usr/local/tomcat/webapps
+%%%
+docker ps
+ls
+docker build -t devops-project .
+docker images
+docker run -- name devops-container -p 8080:8080 devops-project
+```
+
+visit "docker_hostIP:8080" and "docker_hostIP:8080/webapp" 
+
+## deploy a war file on Docker container using Jenkins
+go to Jenkins/new item
+name:Deploy_on_Container
+copy from: Deploy_on_Docker
+OK
+description: deploy on container
+
+In post-build actions/exec command, type in:
+cd /home/dockeradmin: docker build -t devops-image .; docker run -d --name devops-container -p 8080:8080 devops-image;
+apply and save
+
+go back to terminal [dockeradmin@docker-host ~]
+```sh
+pwd
+ls
+rm -rf webapp.war
+docker ps -a
+docker images
+docker rmi docker-project
+```
+go back to Jenkins interface and build now
+
 ## Docker Installation on CentOS server
 ##### Referance URL : https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-repository
 ### Pre-requisites
