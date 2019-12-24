@@ -26,6 +26,7 @@
    visit "IP of docker instance in AWS":8080
    %%%
    
+   
 1. Create a user called dockeradmin
    ```sh
    useradd dockeradmin
