@@ -66,7 +66,8 @@ cd Deploy_on_Tomcat_Server/
 ls
 pwd
 ```
-remote directoty "."
+in remote directoty fill "." Apply and save it, and click build now
+
 ## Docker Installation on CentOS server
 ##### Referance URL : https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-repository
 ### Pre-requisites
