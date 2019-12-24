@@ -26,22 +26,47 @@
    visit "IP of docker instance in AWS":8080
    %%%
    
-   
-1. Create a user called dockeradmin
+### Integrating Docker with Jenkins 
+click Jenkins_Server, manage jenkins/mangage plugins, search in "available" and install "publsh over ssh"
+
+1. Create a user called dockeradmin (under the [root@docker-host ~])
    ```sh
    useradd dockeradmin
    passwd dockeradmin
    ```
 1. add a user to docker group to manage docker 
    ```
+   cat /etc/group
    usermod -aG docker dockeradmin
+   id dockeradmin
    ```
+ click Jenkins_Server, manage jenkins/configure system, in Publish over SSH add SSH Servers, fill the server name:docker-host
+ Hostname: IP address (which can be obtained from terminal by typing "ip addr" eth0/inet), username:dockeradmin. Then click advanced
+ and "use password authentication, or use a different key", the password is set as "dockeradmin". clicking "test configuration" is failed. Then go back to terminal
+  ```sh
+  vi /etc/ssh/sshd_config
+  ```
+  modify the PasswordAuthentication from no to yes
+    ```sh
+  service sshd reload
+  ```
 ### Validation test
+clicking "test configuration" is success. 
+Apply and save it
+
 1. Create a tomcat docker container by pulling a docker image from the public docker registry
    ```sh
    docker run -d --name test-tomcat-server -p 8090:8080 tomcat:latest
    ```
 
+### Jenkins Job to copy artifacts on to DockerHost 
+go to Jenkins/newitem, itemname is Deploy_on_Docker, copy from "Deploy_on_Tomcat_Server", OK. description: deploy on docker, unclick "Poll SCM", remove "post-build actions", add post-build action "send build artifacts over SSH". The Name is docker-host; source files is webapp/target/*.war, we can obtain the path by jumping into Jenkins server terminal [root$jenkins workspace]
+```sh
+cd Deploy_on_Tomcat_Server/ 
+ls
+pwd
+```
+remote directoty "."
 ## Docker Installation on CentOS server
 ##### Referance URL : https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-repository
 ### Pre-requisites
